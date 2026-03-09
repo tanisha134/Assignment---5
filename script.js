@@ -1,33 +1,38 @@
-// ----------Login page------------------//
+// ---------------- LOGIN ----------------
 
 function login(){
-    const username = document.getElementById("username").value
-    const password = document.getElementById("password").value
 
-    if(username === "admin" && password === "admin123"){
-        localStorage.setItem("loggedIn", true)
-        window.location.href = "dashboard.html"
-    }
-    else{
-        alert("Invalid Credentials:")
-    }
+const username = document.getElementById("username").value
+const password = document.getElementById("password").value
+
+if(username === "admin" && password === "admin123"){
+
+localStorage.setItem("loggedIn", true)
+window.location.href = "dashboard.html"
+
+}else{
+alert("Invalid Credentials")
+}
 
 }
 
-//Global storage 
+
+// ---------------- GLOBAL STORAGE ----------------
 
 let allIssues = []
 
-// LOAD ISSUES
+
+// ---------------- LOAD ISSUES ----------------
 
 async function loadIssues(type="all"){
-    const container = document.getElementById("issuesContainer")
 
+const container = document.getElementById("issuesContainer")
 
-// spinner 
+// spinner
 container.innerHTML = `
-<div class= "col-span-4 flex justify-center py-10">
-<span class="loading loading-spinner loading-lg"></span></div>
+<div class="col-span-4 flex justify-center py-10">
+<span class="loading loading-spinner loading-lg"></span>
+</div>
 `
 
 setActiveTab(type)
@@ -36,7 +41,7 @@ const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
 
 const result = await res.json()
 
-//take 50 issues
+// take 50 issues
 allIssues = (result.data || []).slice(0,50)
 
 displayIssues(type)
@@ -45,110 +50,131 @@ document.getElementById("issueCount").innerText = allIssues.length
 
 }
 
-//Active Tab
+
+// ---------------- ACTIVE TAB ----------------
 
 function setActiveTab(type){
-    const tabs = document.querySelectorAll(".tab-btn")
 
-    tabs.forEach(tab=>{
-        tab.classList.remove("bg-blue-600", "text-white")
-    })
+const tabs = document.querySelectorAll(".tab-btn")
 
-    document.getElementById(`tab-${type}`).classList.add("bg-blue-600", "text-white")
+tabs.forEach(tab=>{
+tab.classList.remove("bg-blue-600","text-white")
+})
+
+document.getElementById(`tab-${type}`).classList.add("bg-blue-600","text-white")
+
 }
 
-// Display issues
+
+// ---------------- DISPLAY ISSUES ----------------
 
 function displayIssues(type){
 
-    const container = document.getElementById("issuesContainer")
+const container = document.getElementById("issuesContainer")
 
-    container.innerHTML = ""
+container.innerHTML = ""
 
-    let filtered  = allIssues
+let filtered = allIssues
 
-    if(type === "open"){
-        filtered = allIssues.filter(issue => issue.status === "open")
-    }
-    if(type === "close"){
-        filtered = allIssues.filter(issue => issue.status === "close")
-    }
+if(type === "open"){
+filtered = allIssues.filter(issue => issue.status === "open")
+}
 
-    //update header+count
-
-    const title  = document.getElementById("issueTitle")
-
-    if(type==="all"){
-        title.innerHTML = `All Issues (${filtered.length})`
-    }
-
-    if(type === "open"){
-        title.innerHTML = `Open Issues (${filtered.length})`
-    }
-    if(type === "close"){
-        title.innerHTML = `Close Issues (${filtered.length})`
-    }
-
-    //cards
-
-    filtered.forEach(issue => {
-        const borderColor = 
-        issue.status === "open"
-        ? "border-t-4 border-green-500"
-        : "border-t-4 border-purple-500"
-
-        container.innerHTML += `
-        
-        <div onclick="openModal(${issue.id})"
-        class="card bg-white shadow-md hover:shadow-xl transition cursor-pointer p-4 ${borderColor}"">
-
-        <div class="flex justify-between items-center mb-2">
+if(type === "closed"){
+filtered = allIssues.filter(issue => issue.status === "closed")
+}
 
 
-        <span class = "badge ${issue.priority ==="high"? "bg-red-100 text-red-700"
-        : issue.priority==="medium"
-        ? "bg-yellow-100 text-yellow-700"
-        : "bg-gray-200 text-gray-700"
-        }">
-        ${issue.priority}
-        </span>
+// update header + count
+const title = document.getElementById("issueTitle")
 
-        </div>
+if(type === "all"){
+title.innerHTML = `All Issues (${filtered.length})`
+}
 
-        <h2 class = "text-sm text-gray-500 mb-3">
-        ${issue.description?.slice(0,80)}
-        </p>
+if(type === "open"){
+title.innerHTML = `Open Issues (${filtered.length})`
+}
 
-        <div class = "flex gap-2 mb-3">
-        ${issue.labels?.includes("bug")?`<span class = " badge bg-red-100 text-red-700">bug</span>`  : ""}
+if(type === "closed"){
+title.innerHTML = `Closed Issues (${filtered.length})`
+}
 
-        ${issue.labels?.includes("help wanted")
-        ? `<span class="badge bg-yellow-100 text-yellow-700">help wanted</span>` : ""}
 
-        ${issue.labels?.includes("enhancement")
-        ? `<span class="badge bg-green-100 text-green-700">enhancement</span>` : ""}
+// cards
+filtered.forEach(issue => {
 
-        </div>
+const borderColor =
+issue.status === "open"
+? "border-t-4 border-green-500"
+: "border-t-4 border-purple-500"
 
-        <hr class=" mb-2">
+container.innerHTML += `
 
-        <div class="flex justify-between text-xs text-gray-500">
+<div onclick="openModal(${issue.id})"
+class="card bg-white shadow-md hover:shadow-xl transition cursor-pointer p-4 ${borderColor}"">
 
-        <span>#${issue.id} ${issue.author}</span>
+<div class="flex justify-between items-center mb-2">
 
-        <span>${issue.createdAt?.slice(0,10)}</span>
 
-        </div>
+<span class="badge ${
+issue.priority==="high"
+? "bg-red-100 text-red-700"
+: issue.priority==="medium"
+? "bg-yellow-100 text-yellow-700"
+: "bg-gray-200 text-gray-700"
+}">
+${issue.priority}
+</span>
 
-        </div>
+</div>
 
-        `
-    })
+
+<h2 class="font-semibold text-md mb-1">
+${issue.title}
+</h2>
+
+<p class="text-sm text-gray-500 mb-3">
+${issue.description?.slice(0,80)}
+</p>
+
+
+<div class="flex gap-2 mb-3">
+
+${issue.labels?.includes("bug")
+? `<span class="badge bg-red-100 text-red-700">bug</span>` : ""}
+
+${issue.labels?.includes("help wanted")
+? `<span class="badge bg-yellow-100 text-yellow-700">help wanted</span>` : ""}
+
+${issue.labels?.includes("enhancement")
+? `<span class="badge bg-green-100 text-green-700">enhancement</span>` : ""}
+
+</div>
+
+<hr class=" mb-2">
+
+<div class="flex justify-between text-xs text-gray-500">
+
+<span>#${issue.id} ${issue.author}</span>
+
+<span>${issue.createdAt?.slice(0,10)}</span>
+
+</div>
+
+</div>
+`
+
+})
+
 }
 
 
 
-// Modals
+
+
+
+// ---------------- MODAL ----------------
 
 function openModal(id){
 
@@ -238,17 +264,21 @@ modal.showModal?.() || modal.setAttribute("open","true")
 document.body.classList.add("modal-open")
 
 
-// Search
+
+// ---------------- SEARCH ----------------
 
 function searchIssue(){
-    const keyword = document.getElementById("searchInput").value.toLowerCase()
 
-    const filtered =
-    allIssues.filter(issue=>
-    issue.title.toLowerCase().includes(keyword)
-    )
+const keyword =
+document.getElementById("searchInput").value.toLowerCase()
 
-    displaySearch(filtered)
+const filtered =
+allIssues.filter(issue=>
+issue.title.toLowerCase().includes(keyword)
+)
+
+displaySearch(filtered)
+
 }
 
 
@@ -288,11 +318,14 @@ ${issue.description?.slice(0,80)}
 
 }
 
-// page load
 
-window.onload = () => {
-    if(document.getElementById("issuesContainer"))
-    {
-        loadIssues("all")
-    }
+
+// ---------------- PAGE LOAD ----------------
+
+window.onload = ()=>{
+
+if(document.getElementById("issuesContainer")){
+loadIssues("all")
+}
+
 }
