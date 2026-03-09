@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="./style.css">
+
+    <title>Github Issue Tracker</title>
+</head>
+<body class="bg-[#F8FAFC]">
+    <!-- NAVBAR -->
+
+    <div class="navbar shadow px-6">
+
+        <div class="flex items-center gap-3">
+            <img src="./B13-A5-Github-Issue-Tracker/assets/github-logo.png" alt="" class="w-8">
+
+            <h1 class="text-xl font-bold">GitHub Issues Tracker</h1>
+
+        </div>
+        <div class="flex gap-2 ml-aulo">
+            <input id="searchInput" type="text" placeholder="Search Issues" class="input input-bordered">
+
+            <button onclick="searchIssue()" class="btn btn-primary">+New Issues</button>
+
+        </div>
+    </div>
+    
+</body>
+</html>
