@@ -44,3 +44,48 @@ displayIssues(type)
 document.getElementById("issueCount").innerText = allIssues.length
 
 }
+
+//Active Tab
+
+function setActiveTab(type){
+    const tabs = document.querySelectorAll(".tab-btn")
+
+    tabs.forEach(tab=>{
+        tab.classList.remove("bg-blue-600", "text-white")
+    })
+
+    document.getElementById(`tab-${type}`).classList.add("bg-blue-600", "text-white")
+}
+
+// Display issues
+
+function displayIssues(type){
+
+    const container = document.getElementById("issuesContainer")
+
+    container.innerHTML = ""
+
+    let filtered  = allIssues
+
+    if(type === "open"){
+        filtered = allIssues.filter(issue => issue.status === "open")
+    }
+    if(type === "close"){
+        filtered = allIssues.filter(issue => issue.status === "close")
+    }
+
+    //update header+count
+
+    const title  = document.getElementById("issueTitle")
+
+    if(type==="all"){
+        title.innerHTML = `All Issues (${filtered.length})`
+    }
+
+    if(type === "open"){
+        title.innerHTML = `Open Issues (${filtered.length})`
+    }
+    if(type === "close"){
+        title.innerHTML = `Close Issues (${filtered.length})`
+    }
+}
