@@ -22,7 +22,7 @@ let allIssues = []
 
 async function loadIssues(type="all"){
     const container = document.getElementById("issuesContainer")
-}
+
 
 // spinner 
 container.innerHTML = `
@@ -30,3 +30,17 @@ container.innerHTML = `
 <span class="loading loading-spinner loading-lg"></span></div>
 `
 
+setActiveTab(type)
+
+const res = await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+
+const result = await res.json()
+
+//take 50 issues
+allIssues = (result.data || []).slice(0,50)
+
+displayIssues(type)
+
+document.getElementById("issueCount").innerText = allIssues.length
+
+}
