@@ -13,3 +13,20 @@ function login(){
     }
 
 }
+
+//Global storage 
+
+let allIssues = []
+
+// LOAD ISSUES
+
+async function loadIssues(type="all"){
+    const container = document.getElementById("issuesContainer")
+}
+
+// spinner 
+container.innerHTML = `
+<div class= "col-span-4 flex justify-center py-10">
+<span class="loading loading-spinner loading-lg"></span></div>
+`
+
