@@ -287,3 +287,12 @@ ${issue.description?.slice(0,80)}
 })
 
 }
+
+// page load
+
+window.onload = () => {
+    if(document.getElementById("issuesContainer"))
+    {
+        loadIssues("all")
+    }
+}
